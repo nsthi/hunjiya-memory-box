@@ -986,9 +986,16 @@ Over the past four years, I&#x27;ve lived through moments that shook my sense of
     opener(el).focus({preventScroll:true});
   }
   var wa=0,wt=0,ty0=null;
-  function onWheel(e){var n=Date.now();if(n-wt>400)wa=0;wt=n;wa+=Math.abs(e.deltaY);if(wa>60)unfocus(true)}
-  function onTS(e){ty0=e.touches&&e.touches[0]?e.touches[0].clientY:null}
-  function onTM(e){if(ty0!=null&&e.touches&&e.touches[0]&&Math.abs(e.touches[0].clientY-ty0)>40)unfocus(true)}
+  /* A wheel/swipe over the photograph is a gesture to leave focus. The detail panel is
+     independently scrollable, so gestures that begin there must remain native panel
+     scrolling even when the panel has reached its top or bottom edge. */
+  function overPanel(e){return !!(e.target&&panel.contains(e.target))}
+  function onWheel(e){
+    if(overPanel(e)){wa=0;wt=0;return}
+    var n=Date.now();if(n-wt>400)wa=0;wt=n;wa+=Math.abs(e.deltaY);if(wa>60)unfocus(true)
+  }
+  function onTS(e){ty0=overPanel(e)?null:(e.touches&&e.touches[0]?e.touches[0].clientY:null)}
+  function onTM(e){if(overPanel(e))return;if(ty0!=null&&e.touches&&e.touches[0]&&Math.abs(e.touches[0].clientY-ty0)>40)unfocus(true)}
   function arm(){wa=0;wt=0;addEventListener('wheel',onWheel,{passive:true});
     addEventListener('touchstart',onTS,{passive:true});addEventListener('touchmove',onTM,{passive:true})}
   function disarm(){removeEventListener('wheel',onWheel);removeEventListener('touchstart',onTS);
