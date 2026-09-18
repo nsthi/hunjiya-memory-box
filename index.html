@@ -114,7 +114,7 @@ body:not(.box-site):not(.out) #hero .tape{opacity:0}
 body:not(.box-site) .songb.hover{z-index:4}
 /* The photograph opens details; playback lives in the focused view. */
 .songb .open{position:absolute;inset:0;z-index:5;margin:0;padding:0;border:0;background:none;cursor:inherit;
-  -webkit-tap-highlight-color:transparent}
+  pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .songb .open:focus-visible{outline:2px solid #111;outline-offset:3px}
 .listen{margin:0 0 1.8em}
 .btn.listen-btn{display:inline-flex;align-items:center;gap:.8em;text-decoration:none;text-transform:lowercase;letter-spacing:.08em}
@@ -364,6 +364,7 @@ body.box-site,body.box-site #stage{background:#f3f0e9}
 #box-open{position:absolute;left:20%;top:19%;width:60%;height:62%;padding:0;border:0;background:none;cursor:pointer;z-index:2}
 #box-open:disabled{display:none}
 #box-open:focus-visible{outline:1px dashed #796b56;outline-offset:8px;border-radius:12px}
+#box-mobile-hits{display:none}
 .box-caption{position:absolute;bottom:28px;left:4vw;right:4vw;display:flex;justify-content:space-between;align-items:end;font-size:10px;letter-spacing:.1em;color:#655b50;z-index:3;pointer-events:none}
 .box-caption button{pointer-events:auto}
 #open-label{font:inherit;font-size:12px;color:#27221b;letter-spacing:.02em;background:none;border:0;border-bottom:1px solid #948675;padding:12px 3px;cursor:pointer;min-height:44px}
@@ -394,6 +395,12 @@ body.box-site.focus #scene-wrap{opacity:1}
  #box-opening-zone{position:relative;inset:auto;height:calc(100svh + var(--box-travel,0px));z-index:0}
  #box-intro{position:sticky;inset:auto;top:0;height:100svh;min-height:480px}
  #box-open{left:5%;width:90%;top:24%;height:52%}
+ #box-mobile-hits{display:block;position:absolute;inset:0;z-index:2;pointer-events:none}
+ #box-mobile-hits button{position:absolute;display:block;margin:0;padding:0;border:0;background:transparent;
+   pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+ #box-mobile-hits button:focus-visible{outline:2px solid #111;outline-offset:2px}
+ .box-site:not(.box-complete) #box-mobile-hits,.box-site.focus #box-mobile-hits,
+ .box-site.panelopen #box-mobile-hits{display:none}
  #box-poster{width:min(92vw,440px);max-height:calc(100svh - 210px)}
  .box-caption{left:6vw;right:6vw;bottom:32px;font-size:9px;letter-spacing:.04em;gap:8px}
  .box-caption .edition{max-width:76px;line-height:1.6}
@@ -1063,14 +1070,24 @@ Over the past four years, I&#x27;ve lived through moments that shook my sense of
  const clamp=v=>Math.max(0,Math.min(1,Number(v)||0));
  const mobile=()=>innerWidth<=700;
  let progress=0,ready=false,failed=false,carton=null,animation=0,startTime=0,startProgress=0,travel=0,pausedAt=0;
- let queuedOpen=false,manual=false,renderPending=false,disposed=false;
+ let queuedOpen=false,manual=false,renderPending=false,disposed=false,hitLayer=null;
+ const hitButtons=new Map();
  const key='memory-box-opened-v2-'+mode;
  let remembered=false;try{remembered=sessionStorage.getItem(key)==='1'}catch(e){}
  body.dataset.opening=mode;
  const api=window.BoxExperience={mode,get progress(){return progress},get ready(){return ready},get failed(){return failed},open,skip,replay,setProgress(v){manual=true;cancel();setProgress(v)},get travel(){return travel},photoBounds(){return carton?carton.photoBounds():[]}};
  function remember(opened){try{if(opened)sessionStorage.setItem(key,'1');else sessionStorage.removeItem(key)}catch(e){}}
  function rect(){if(mobile())return null;const r=scene.getBoundingClientRect();return {top:r.top,width:r.width,height:r.height}}
- function paint(){renderPending=false;if(carton&&!disposed)carton.render(progress,rect())}
+ function layoutHits(){
+  if(!carton||!hitLayer||!mobile()||progress<1)return;
+  carton.photoBounds().forEach(bounds=>{
+   const button=hitButtons.get(bounds.c+','+bounds.r);if(!button)return;
+   const pad=6;
+   button.style.left=(bounds.left-pad)+'px';button.style.top=(bounds.top-pad)+'px';
+   button.style.width=(bounds.width+pad*2)+'px';button.style.height=(bounds.height+pad*2)+'px';
+  });
+ }
+ function paint(){renderPending=false;if(carton&&!disposed){carton.render(progress,rect());layoutHits()}}
  function requestPaint(){if(!renderPending){renderPending=true;requestAnimationFrame(paint)}}
  function setProgress(v){
   progress=clamp(v);const complete=progress>=1;
@@ -1131,8 +1148,13 @@ Over the past four years, I&#x27;ve lived through moments that shook my sense of
   const image=el.querySelector('.pic img'),pos=getComputedStyle(image).objectPosition.split(' ').map(x=>parseFloat(x)/100);
   const placement=JSON.parse(el.dataset.place||'{"x":0,"y":0,"r":0,"s":1,"bend":0,"t":[]}');
   const tapes=placement.t.map(t=>({...t}));
-  return {c:+el.style.getPropertyValue('--col'),r:+el.style.getPropertyValue('--row'),src:el.dataset.renderSrc||image.currentSrc||image.src,pos,placement,tapes};
+  return {c:+el.style.getPropertyValue('--col'),r:+el.style.getPropertyValue('--row'),track:+el.dataset.track,
+    label:el.querySelector('.open').getAttribute('aria-label'),src:el.dataset.renderSrc||image.currentSrc||image.src,pos,placement,tapes};
  });
+ hitLayer=document.createElement('div');hitLayer.id='box-mobile-hits';hitLayer.setAttribute('aria-label','songs in the opened box');
+ tiles.forEach(tile=>{const button=document.createElement('button');button.type='button';button.dataset.track=tile.track;
+  button.setAttribute('aria-label',tile.label);hitLayer.appendChild(button);hitButtons.set(tile.c+','+tile.r,button)});
+ intro.appendChild(hitLayer);
  const timeout=setTimeout(()=>{if(!ready)fail()},10000);
  const rendererURL=new URL('assets/box/renderer.js',document.baseURI).href;
  import(rendererURL).then(async module=>{
