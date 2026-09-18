@@ -327,9 +327,13 @@ html.js #src{display:none}
   .nb em{display:none}
   .nb.up{left:10px}.nb.down{right:10px}
   .nb.up i,.nb.down i{transform:rotate(-90deg)}
-  .nb.up:hover i,.nb.up:focus-visible i,.nb.down:hover i,.nb.down:focus-visible i{transform:rotate(-90deg) scale(1.06)}
+  .nb.up:hover i,.nb.up:focus-visible i,.nb.down:hover i,.nb.down:focus-visible i{
+    background:rgba(255,255,255,.92);border-color:var(--btn);color:#111;transform:rotate(-90deg)}
+  .nb:focus-visible{outline:1px solid #111;outline-offset:1px}
   #navx{position:absolute;left:auto;right:12px;top:24px;width:auto;min-width:64px;height:44px;padding:0 10px;
     border-radius:0;background:rgba(255,255,255,.94);font-size:11px;line-height:1;letter-spacing:.08em;text-transform:lowercase}
+  #navx:hover{background:rgba(255,255,255,.94);border-color:var(--btn);color:#111;outline:none}
+  #navx:focus-visible{background:rgba(255,255,255,.94);border-color:#111;color:#111;outline:1px solid #111;outline-offset:2px}
   .nav-close-text{display:inline}.nav-close-icon{display:none}
   #scrim{display:none}
   #panel{left:0;right:0;bottom:0;height:52vh;padding:24px clamp(22px,3.4vw,60px) 34px;border-top:1px solid var(--rule)}
