@@ -28,9 +28,9 @@ const faces=[
 export async function createCarton(canvas,tiles){
  const compact=matchMedia('(max-width:700px)').matches;
  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'low-power'});
- // Real phones pay for every physical framebuffer pixel. The lower cap and smaller
- // shadow map preserve the cardboard detail without exhausting mobile WebGL memory.
- renderer.setPixelRatio(Math.min(devicePixelRatio,compact?1.35:2));
+ // The source textures are bounded, but the final carton still needs enough framebuffer
+ // density to stay crisp on a retina phone. Two device pixels is a safe middle ground.
+ renderer.setPixelRatio(Math.min(devicePixelRatio,2));
  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
  renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.setClearColor(0xf3f0e9,1);
  const scene=new THREE.Scene(), camera=new THREE.OrthographicCamera(-3,3,3,-3,.1,100);
