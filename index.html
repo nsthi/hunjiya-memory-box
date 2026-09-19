@@ -240,7 +240,13 @@ body.panelopen{overflow:hidden}
 .influence-list{margin:0;padding-left:1.15em}
 .influence-list li{padding:.18em 0;font-size:15.5px;line-height:1.5}
 .influence-list li::marker{color:var(--red)}
-.tracklist-scan{display:block;width:100%;max-width:440px;height:auto;margin:0 0 1.8em -6px;mix-blend-mode:multiply}
+.tracklist-scan{display:block;width:100%;max-width:440px;height:auto;margin:0 0 1.15em -6px;mix-blend-mode:multiply}
+.ep-stream-cta{display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;margin:0 0 2.2em;
+  padding:0 1.4em;background:var(--red);color:#fff;text-decoration:none;font-size:12.5px;font-weight:600;
+  letter-spacing:.11em;text-transform:uppercase;transition:background .22s ease,transform .22s var(--ease)}
+.ep-stream-cta:hover{background:#111;transform:translateY(-1px)}
+.ep-stream-cta:focus-visible{outline:2px solid #111;outline-offset:3px}
+.songs-list-label{margin:0 0 .8em;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
 .rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
 .rows li{border-bottom:1px solid var(--rule)}
 .rows button,.rows a{width:100%;text-align:left;border:0;background:none;padding:0;display:flex;align-items:center;cursor:pointer;
@@ -860,11 +866,12 @@ you’ve gone while i’m stuck in the same room</p></div></article>
     else if(kind==='songs'){
       var im=document.createElement('img');im.className='tracklist-scan';
       im.src='assets/scans/titles-red.jpg';im.alt='the tracklist, handwritten in red';f.appendChild(im);
+      if(EP){var stream=document.createElement('a');stream.className='ep-stream-cta';stream.href=EP;
+        stream.target='_blank';stream.rel='noopener';stream.textContent='stream the whole ep ↗';f.appendChild(stream)}
+      var label=document.createElement('p');label.className='songs-list-label';label.textContent='track list';f.appendChild(label);
       var ul=document.createElement('ul');ul.className='rows';
-      ul.innerHTML='<li class="navrow"><button type="button" data-open="about">about</button></li>'
-        +[1,2,3,4,5,6].map(function(i){return '<li class="trow"><button type="button" data-track="'+i+'">'
-          +'<b>'+('0'+i).slice(-2)+'</b>'+TITLES[i]+'</button></li>'}).join('')
-        +(EP?'<li class="navrow"><a class="ep-stream" href="'+EP+'" target="_blank" rel="noopener">stream the whole ep ↗</a></li>':'');
+      ul.innerHTML=[1,2,3,4,5,6].map(function(i){return '<li class="trow"><button type="button" data-track="'+i+'">'
+          +'<b>'+('0'+i).slice(-2)+'</b>'+TITLES[i]+'</button></li>'}).join('');
       f.appendChild(ul);
     }
     f.appendChild(closeRow());
