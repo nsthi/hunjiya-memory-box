@@ -210,14 +210,15 @@ body.panelopen:not(.focus) #scrim{opacity:1;pointer-events:auto}
 @media (min-width:701px){#panel{top:44px;right:0;width:50vw;height:calc(100vh - 44px);
   padding:clamp(30px,5vh,62px) clamp(22px,3.4vw,60px) 14vh;border-left:1px solid var(--rule)}}
 body.panelopen{overflow:hidden}
-#panel>div{max-width:62ch;display:flex;flex-direction:column}
-.p-x{display:flex;justify-content:flex-end;margin:-18px -10px 6px 0}
+#panel>div{width:100%;max-width:none;display:flex;flex-direction:column}
+.p-x{display:flex;justify-content:flex-end;width:100%;margin:-18px -10px 6px 0}
 .p-x button{display:block;width:48px;height:48px;border:0;background:none;color:var(--mute);font-size:24px;
   line-height:1;cursor:pointer;transition:color .22s ease}
 .p-x button:hover{color:#111}
 .eyebrow{display:flex;justify-content:space-between;align-items:baseline;gap:1.5em;padding-bottom:.9em;
   margin-bottom:2em;border-bottom:1px solid var(--rule);font-size:10.5px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--mute);line-height:1.5}
+#dates>.eyebrow{padding-bottom:0;border-bottom:0}
 .trk .eyebrow{margin-bottom:2.4em}
 .flag{margin:0 0 1.4em;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);line-height:1.5}
 .trk h2{margin:0 0 1.6em;display:flex;align-items:flex-start}
@@ -242,15 +243,15 @@ body.panelopen{overflow:hidden}
 .tracklist-scan{display:block;width:100%;max-width:440px;height:auto;margin:0 0 1.8em -6px;mix-blend-mode:multiply}
 .rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
 .rows li{border-bottom:1px solid var(--rule)}
-.rows button{width:100%;text-align:left;border:0;background:none;padding:0;display:flex;align-items:center;cursor:pointer;
+.rows button,.rows a{width:100%;text-align:left;border:0;background:none;padding:0;display:flex;align-items:center;cursor:pointer;
   transition:padding-left .3s var(--ease),color .2s ease}
-.rows button:hover{padding-left:9px}
-.rows .navrow button{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);min-height:50px}
-.rows .navrow button:hover{color:#111}
+.rows button:hover,.rows a:hover{padding-left:9px}
+.rows .navrow button,.rows .navrow a{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);min-height:50px;text-decoration:none}
+.rows .navrow button:hover,.rows .navrow a:hover{color:#111}
 .rows .trow button{font-size:16px;min-height:54px;gap:1.1em}
 .rows .trow b{color:var(--red);font-weight:700;font-size:15px;letter-spacing:-.03em;min-width:2.5ch}
 .h2.cal{margin-bottom:.8em}
-.cal{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+ol.cal{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
 .cal li{display:flex;gap:14px;flex-wrap:wrap;align-items:baseline;padding:.85em 0;border-bottom:1px solid var(--rule)}
 .cal li:last-child{border-bottom:0}
 .cal .d{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;min-width:8ch;color:var(--mute)}
@@ -488,7 +489,7 @@ But i’ve tried too hard to give
 forced myself a way in
 so i’ll make room
 and find what feels like home</p></div></article>
-<article class="trk" id="t2" aria-labelledby="h-t2"><div class="eyebrow"><span>memory box · track two</span><span>[02]</span></div><p class="flag">single one — out oct 1</p><h2 id="h-t2"><span class="handh" role="img" aria-label="start over" style="--src:url('assets/scans/title-start-over.svg');--hw:385"></span></h2><p class="listen"><a class="btn listen-btn" href="https://untitled.stream/library/track/pC0O75tpw8hfzDhX5wNXF" target="_blank" rel="noopener"><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true"><path d="M2 1.6v12.8L13 8z" fill="currentColor"/></svg><span>play on untitled</span></a></p><div class="sheet"><p class="micro">as written</p><p class="lyr">the same old story in another city
+<article class="trk" id="t2" aria-labelledby="h-t2"><div class="eyebrow"><span>memory box · track two</span><span>[02]</span></div><p class="flag">single one — out oct 13</p><h2 id="h-t2"><span class="handh" role="img" aria-label="start over" style="--src:url('assets/scans/title-start-over.svg');--hw:385"></span></h2><p class="listen"><a class="btn listen-btn" href="https://untitled.stream/library/track/pC0O75tpw8hfzDhX5wNXF" target="_blank" rel="noopener"><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true"><path d="M2 1.6v12.8L13 8z" fill="currentColor"/></svg><span>play on untitled</span></a></p><div class="sheet"><p class="micro">as written</p><p class="lyr">the same old story in another city
 i’ve moved three times to see if something fits me
 lemme start over
 
@@ -525,7 +526,7 @@ i’m gonna get to the end
 to prove that i’ve lived well
 
 lemme start over</p></div></article>
-<article class="trk" id="t3" aria-labelledby="h-t3"><div class="eyebrow"><span>memory box · track three</span><span>[03]</span></div><p class="flag">single two — out oct 15</p><h2 id="h-t3"><span class="handh" role="img" aria-label="everything i know" style="--src:url('assets/scans/title-everything-i-know.svg');--hw:416"></span></h2><p class="listen"><a class="btn listen-btn" href="https://untitled.stream/library/track/EJ7bv8EmDJLmYVE620VmT" target="_blank" rel="noopener"><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true"><path d="M2 1.6v12.8L13 8z" fill="currentColor"/></svg><span>play on untitled</span></a></p><div class="sheet"><p class="micro">as written</p><p class="lyr">i find it hard to remember
+<article class="trk" id="t3" aria-labelledby="h-t3"><div class="eyebrow"><span>memory box · track three</span><span>[03]</span></div><h2 id="h-t3"><span class="handh" role="img" aria-label="everything i know" style="--src:url('assets/scans/title-everything-i-know.svg');--hw:416"></span></h2><p class="listen"><a class="btn listen-btn" href="https://untitled.stream/library/track/EJ7bv8EmDJLmYVE620VmT" target="_blank" rel="noopener"><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true"><path d="M2 1.6v12.8L13 8z" fill="currentColor"/></svg><span>play on untitled</span></a></p><div class="sheet"><p class="micro">as written</p><p class="lyr">i find it hard to remember
 what i did last week or so
 but what once was a stranger
 is now everything i know
@@ -688,11 +689,11 @@ feeling your pull in the full moon
 oh why can’t i get over it
 you’ve gone while i’m stuck in the same room</p></div></article>
 <section class="sec" id="about" aria-labelledby="h-concept"><div class="eyebrow"><span>01 — epk description</span><span>memory box</span></div><h2 class="h2" id="h-concept">epk description</h2><div class="concept"><p>memory box is a six-song project about archiving what &quot;home&quot; feels like. Not just as a place, but as the feeling of being grounded.</p><p>Each song is an old photo pulled from the bottom of your unorganized drawer that unlocks a flood of nostalgia.</p><p>Over the past four years, I&#x27;ve lived through moments that shook my sense of self such as moving between homes, rebuilding communities from scratch, losing myself in one person, feeling trapped in a controlling environment. Each of these was its own specific time and place, and each one felt like &quot;home&quot; to me, if only for a while.</p><p>“memory box” is what happens when you lay all those vignettes out together in one place, in one box, so you can trace the pieces that made you who you are.</p></div></section>
-<section class="sec" id="insp" aria-labelledby="h-insp"><div class="eyebrow"><span>03 — inspirations</span><span>people · places · things</span></div><h2 class="h2" id="h-insp">inspirations</h2><div class="influence-groups"><div class="influence-group"><h3>Music influences:</h3><ul class="influence-list"><li>Saya Gray</li><li>Absolutely</li><li>Mitski</li><li>Se So Neon</li><li>Silica Gel</li><li>Bon Iver</li><li>James Blake</li></ul></div><div class="influence-group"><h3>Other influences:</h3><ul class="influence-list"><li>voice memos</li><li>nostalgia</li><li>film photos</li><li>moving boxes</li><li>forest</li><li>memorabilia</li></ul></div></div></section>
-<section class="sec" id="dates" aria-labelledby="h-cal"><div class="eyebrow"><span>04 — release calendar</span><span>fall 2026</span></div><h2 class="h2 cal" id="h-cal">release calendar</h2><ol class="cal"><li data-date="2026-10-13"><span class="d">oct 13</span><span class="e">single one</span><span class="next"><i></i>next</span></li><li data-date="2026-11-17"><span class="d">nov 17</span><span class="e">single two</span><span class="next"><i></i>next</span></li><li data-date="2026-11-20"><span class="d">nov 20</span><span class="e">“memory box” — ep release + release party</span><span class="next"><i></i>next</span></li></ol></section>
+<section class="sec" id="insp" aria-labelledby="h-insp"><div class="eyebrow"><span>02 — inspirations</span><span>people · places · things</span></div><h2 class="h2" id="h-insp">inspirations</h2><div class="influence-groups"><div class="influence-group"><h3>Music influences:</h3><ul class="influence-list"><li>Saya Gray</li><li>Absolutely</li><li>Mitski</li><li>Se So Neon</li><li>Silica Gel</li><li>Bon Iver</li><li>James Blake</li></ul></div><div class="influence-group"><h3>Other influences:</h3><ul class="influence-list"><li>voice memos</li><li>nostalgia</li><li>film photos</li><li>moving boxes</li><li>forest</li><li>memorabilia</li></ul></div></div></section>
+<section class="sec" id="dates" aria-labelledby="h-cal"><div class="eyebrow"><span>03 — release calendar</span><span>fall 2026</span></div><h2 class="h2 cal" id="h-cal">release calendar</h2><ol class="cal"><li data-date="2026-10-13"><span class="d">oct 13</span><span class="e">single one — “start over”</span><span class="next"><i></i>next</span></li><li data-date="2026-11-17"><span class="d">nov 17</span><span class="e">single two — tbd</span><span class="next"><i></i>next</span></li><li data-date="2026-11-28"><span class="d">nov 28</span><span class="e">tentative ep release date</span><span class="next"><i></i>next</span></li></ol></section>
 <section class="sec press" id="press" aria-labelledby="h-press"><h2 class="h2" id="h-press">press &amp; booking</h2><p class="press-contact">for more info on press &amp; booking, contact <a class="mail" href="mailto:hunjiya.mgmt@gmail.com">hunjiya.mgmt@gmail.com</a></p></section>
 </div>
-<script>window.EPK={"face": [0.6, 0.45], "titles": {"1": "home", "2": "start over", "3": "everything i know", "4": "the function", "5": "how to be the best version of yourself", "6": "miami in the winter"}, "box": true};</script>
+<script>window.EPK={"face": [0.6, 0.45], "titles": {"1": "home", "2": "start over", "3": "everything i know", "4": "the function", "5": "how to be the best version of yourself", "6": "miami in the winter"}, "project": "https://untitled.stream/library/project/NVWFjSSlrWVzobw80mWE1", "box": true};</script>
 <script>(function(){
   'use strict';
   var TILE=220, BAR=window.EPK&&window.EPK.box?64:44;
@@ -703,7 +704,7 @@ you’ve gone while i’m stuck in the same room</p></div></article>
       hint=document.getElementById('hint');
   if(!scene||!wrap)return;
   var DATA=window.EPK||{face:[0.5,0.5],titles:{}};
-  var TITLES=DATA.titles, BOX=!!DATA.box;
+  var TITLES=DATA.titles, BOX=!!DATA.box, EP=DATA.project||'';
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---- props. One component: the build pins header, ?header= overrides it for review ---- */
@@ -863,7 +864,7 @@ you’ve gone while i’m stuck in the same room</p></div></article>
       ul.innerHTML='<li class="navrow"><button type="button" data-open="about">about</button></li>'
         +[1,2,3,4,5,6].map(function(i){return '<li class="trow"><button type="button" data-track="'+i+'">'
           +'<b>'+('0'+i).slice(-2)+'</b>'+TITLES[i]+'</button></li>'}).join('')
-        +'<li class="navrow"><button type="button" data-open="press">press &amp; booking</button></li>';
+        +(EP?'<li class="navrow"><a class="ep-stream" href="'+EP+'" target="_blank" rel="noopener">stream the whole ep ↗</a></li>':'');
       f.appendChild(ul);
     }
     f.appendChild(closeRow());
