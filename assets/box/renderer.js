@@ -47,7 +47,7 @@ export async function createCarton(canvas,tiles){
  const contact=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(contactCanvas),transparent:true,depthWrite:false}));contact.position.z=-2;scene.add(contact);
  const loader=new THREE.TextureLoader();
  const load=async url=>{const t=await loader.loadAsync(url);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return t};
- const [kraft,tapeTex,exterior,wordmark]=await Promise.all([load('assets/box/kraft-texture.webp'),load('assets/tape/clear.webp'),load('assets/box/carton-panel.webp'),load('assets/box/memory-box-wordmark.png')]);
+ const [kraft,tapeTex,exterior,wordmark,stamp]=await Promise.all([load('assets/box/kraft-texture.webp'),load('assets/tape/clear.webp'),load('assets/box/carton-panel.webp'),load('assets/box/memory-box-wordmark.png'),load('assets/hunjiya-logo-black.png')]);
  const photoMaps=await Promise.all(tiles.map(t=>load(t.src)));
  const bump=kraft.clone();bump.colorSpace=THREE.NoColorSpace;bump.needsUpdate=true;
  const byId=Object.fromEntries(faces.map(f=>[f.id,{...f}]));
@@ -60,6 +60,8 @@ export async function createCarton(canvas,tiles){
   const logoW=760,logoH=logoW*wordmark.image.height/wordmark.image.width;
   ctx.drawImage(wordmark.image,(1024-logoW)/2,210,logoW,logoH);
   ctx.fillStyle='#33291e';ctx.textBaseline='top';ctx.font='34px monospace';ctx.fillText('contents: six songs',100,622);
+  ctx.save();ctx.globalAlpha=.72;ctx.translate(848,842);ctx.rotate(-.075);
+  ctx.drawImage(stamp.image,-110,-110,220,220);ctx.restore();
   const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t;
  }
  const printedBoard=printMap();
