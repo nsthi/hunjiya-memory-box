@@ -60,11 +60,16 @@ export async function createCarton(canvas,tiles){
   const logoW=760,logoH=logoW*wordmark.image.height/wordmark.image.width;
   ctx.drawImage(wordmark.image,(1024-logoW)/2,210,logoW,logoH);
   ctx.fillStyle='#33291e';ctx.textBaseline='top';ctx.font='34px monospace';ctx.fillText('contents: six songs',100,622);
-  ctx.save();ctx.globalAlpha=.72;ctx.translate(848,842);ctx.rotate(-.075);
-  ctx.drawImage(stamp.image,-110,-110,220,220);ctx.restore();
   const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t;
  }
- const printedBoard=printMap();
+ function stampMap(){
+  const c=document.createElement('canvas');c.width=c.height=1024;const ctx=c.getContext('2d');
+  ctx.translate(1024,1024);ctx.rotate(Math.PI);ctx.drawImage(exterior.image,0,0,1024,1024);
+  ctx.setTransform(1,0,0,1,0,0);ctx.globalCompositeOperation='multiply';ctx.globalAlpha=.72;
+  ctx.translate(512,550);ctx.rotate(-.075);ctx.drawImage(stamp.image,-160,-160,320,320);
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t;
+ }
+ const printedBoard=printMap(),stampedBoard=stampMap();
  for(const f of Object.values(byId)){
   const group=new THREE.Group();group.matrixAutoUpdate=false;root.add(group);f.group=group;
   // Four edge materials, inward face, outward face. Each is actual board thickness.
@@ -74,6 +79,7 @@ export async function createCarton(canvas,tiles){
   inner.color.multiplyScalar(1+Math.sin(f.c*5+f.r*9)*.035);
   if(f.c===0&&f.r===0){inner.map=printedBoard;inner.color.set(0xd6c5ad)}
   if(f.id==='front')outer.map=printedBoard;
+  if(f.id==='right')outer.map=stampedBoard;
   const geo=new RoundedBoxGeometry(.998,.998,.008,10,.003);
   // The free edges are battered; the scored hinges stay continuous.
   const pos=geo.attributes.position;
